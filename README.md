@@ -1,5 +1,9 @@
 Create form easy and fast. Create fields once and use their many times
 
+### Why field is not widget
+Often, the application uses a single design forms, you once set up the topic and / or create your fields
+And then you write only logic in the controller
+
 ## Getting started
 To use this plugin, add `formaster` as a [dependency in your pubspec.yaml file](https://flutter.dev/platform-plugins/).
 

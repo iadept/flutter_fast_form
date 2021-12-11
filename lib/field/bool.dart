@@ -152,7 +152,12 @@ Widget _buildSwitch(
         child: Text(placeholder, maxLines: 1),
       )),
       Padding(
-        padding: const EdgeInsets.only(top: 16, bottom: 16, left: 8),
+        padding: const EdgeInsets.only(
+          top: 16,
+          bottom: 16,
+          left: 8,
+          right: 16,
+        ),
         child: SizedBox(
           width: 20,
           height: 20,

@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 part 'widget/helper.dart';
 
+/// Base for create form item
 abstract class FormItem extends ChangeNotifier {
   final EdgeInsets? margin;
 
@@ -30,6 +31,7 @@ abstract class FormItem extends ChangeNotifier {
   void disposeWidget() {}
 }
 
+/// Item for presenting widget in form layout
 class FormCustomItem extends FormItem {
   final Widget child;
 
@@ -44,7 +46,6 @@ class FormCustomItem extends FormItem {
 typedef FormItemWrapper = Widget Function(FormItem item, Widget child);
 
 abstract class FormLayout extends FormItem {
-
   final FormItemWrapper? wrapper;
   final EdgeInsets? fieldMargin;
 
@@ -84,6 +85,7 @@ abstract class FormLayout extends FormItem {
   }
 }
 
+/// Base for create form item
 abstract class FormFieldItem<T> extends FormItem {
   final focusNode = FocusNode();
   final Key? key;

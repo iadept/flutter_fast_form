@@ -17,13 +17,27 @@ abstract class InputField<T> extends FormFieldItem<T?> {
   FormFieldValidator<T>? validator;
   List<TextInputFormatter>? formatters;
   final bool emitDirty;
-  final bool obscureText;
+
   final bool enableSuggestions;
   final bool autocorrect;
   final Iterable<String>? autofillHints;
   final VoidCallback? onSubmit;
 
   TextEditingController? _controller;
+  bool _obscureText;
+  Widget? _suffix;
+  T? _value;
+
+  bool get obscureText => _obscureText;
+  set obscureText(bool value) {
+    _obscureText = value;
+    notifyListeners();
+  }
+
+  set suffix(Widget? value) {
+    _suffix = value;
+    notifyListeners();
+  }
 
   T? get value => _value;
 
@@ -32,8 +46,6 @@ abstract class InputField<T> extends FormFieldItem<T?> {
     _controller?.text = formattedValue;
     _onChanged(newValue);
   }
-
-  T? _value;
 
   InputField({
     Key? key,
@@ -54,11 +66,14 @@ abstract class InputField<T> extends FormFieldItem<T?> {
     bool isActive = true,
     bool isDisabled = false,
     this.emitDirty = true,
-    this.obscureText = false,
+    bool obscureText = false,
     this.enableSuggestions = true,
     this.autocorrect = true,
     this.autofillHints,
+    Widget? suffix,
   })  : _value = initialValue,
+        _obscureText = obscureText,
+        _suffix = suffix,
         super(
           key: key,
           onChanged: onChanged,
@@ -93,10 +108,11 @@ abstract class InputField<T> extends FormFieldItem<T?> {
         errorStyle: theme.requiredText?.isNotEmpty == true
             ? null
             : const TextStyle(height: 0),
+        suffixIcon: _suffix,
       ),
       validator: (e) {
         final value = convertFrom(e);
-        if (isRequired && value != null) {
+        if (isRequired && value == null) {
           isValid = false;
           return requiredText ?? theme.requiredText;
         }
@@ -128,13 +144,13 @@ abstract class InputField<T> extends FormFieldItem<T?> {
       textInputAction: inputAction,
       keyboardType: keyboardType,
       autocorrect: autocorrect,
-      obscureText: obscureText,
+      obscureText: _obscureText,
       autofillHints: autofillHints,
     );
     return child;
   }
 
-  String? convertTo(T? value) => value.toString();
+  String? convertTo(T? value) => value?.toString();
 
   /// On empty string this function should return null
   T? convertFrom(String? value);
@@ -186,6 +202,7 @@ class StringField extends InputField<String> {
     bool enableSuggestions = true,
     bool autocorrect = true,
     Iterable<String>? autofillHints,
+    Widget? suffix,
   }) : super(
           key: key,
           placeholder: placeholder,
@@ -209,6 +226,7 @@ class StringField extends InputField<String> {
           enableSuggestions: enableSuggestions,
           autocorrect: autocorrect,
           autofillHints: autofillHints,
+          suffix: suffix,
         );
 
   @override
@@ -259,6 +277,7 @@ class IntField extends InputField<int> {
     bool enableSuggestions = true,
     bool autocorrect = true,
     Iterable<String>? autofillHints,
+    Widget? suffix,
   }) : super(
           key: key,
           placeholder: placeholder,
@@ -271,7 +290,7 @@ class IntField extends InputField<int> {
           requiredText: requiredText,
           initialValue: initialValue,
           formatters: formatters = <TextInputFormatter>[
-            FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+            FilteringTextInputFormatter.allow(RegExp(r'\d')),
             ...(formatters ?? []),
           ],
           keyboardType: TextInputType.numberWithOptions(
@@ -286,6 +305,7 @@ class IntField extends InputField<int> {
           enableSuggestions: enableSuggestions,
           autocorrect: autocorrect,
           autofillHints: autofillHints,
+          suffix: suffix,
         );
 
   @override
@@ -319,6 +339,7 @@ class DoubleField extends InputField<double> {
     bool enableSuggestions = true,
     bool autocorrect = true,
     Iterable<String>? autofillHints,
+    Widget? suffix,
   }) : super(
           key: key,
           placeholder: placeholder,
@@ -331,7 +352,7 @@ class DoubleField extends InputField<double> {
           requiredText: requiredText,
           initialValue: initialValue,
           formatters: formatters = <TextInputFormatter>[
-            FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+            FilteringTextInputFormatter.allow(RegExp(r'(^\d*\.?\d*)')),
             ...(formatters ?? []),
           ],
           keyboardType: TextInputType.numberWithOptions(
@@ -346,6 +367,7 @@ class DoubleField extends InputField<double> {
           enableSuggestions: enableSuggestions,
           autocorrect: autocorrect,
           autofillHints: autofillHints,
+          suffix: suffix,
         );
 
   @override

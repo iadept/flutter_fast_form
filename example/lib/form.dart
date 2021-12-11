@@ -124,11 +124,20 @@ class ExampleForm {
       },
       requiredText: "Custom required text",
       inputAction: TextInputAction.next,
+      obscureText: true,
+      suffix: _ShowPasswordButton(
+        onTap: () {
+          stringField.obscureText = !stringField.obscureText;
+          return stringField.obscureText;
+        },
+      ),
     );
 
     boolField = BoolField.checkbox(
       placeholder: 'Boolean field',
-      onChanged: (value) {},
+      onChanged: (value) {
+        stringField.obscureText = value;
+      },
       onSaved: (value) {
         model.boolValue = value;
       },
@@ -200,5 +209,34 @@ class ExampleForm {
     stringField.value = '';
     boolField.value = false;
     dateField.value = null;
+  }
+}
+
+class _ShowPasswordButton extends StatefulWidget {
+  final bool Function() onTap;
+
+  const _ShowPasswordButton({
+    Key? key,
+    required this.onTap,
+  }) : super(key: key);
+
+  @override
+  _ShowPasswordButtonState createState() => _ShowPasswordButtonState();
+}
+
+class _ShowPasswordButtonState extends State<_ShowPasswordButton> {
+  bool _isVisible = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      child: Icon(
+          _isVisible ? Icons.remove_red_eye_rounded : Icons.security_outlined),
+      onTap: () {
+        setState(() {
+          _isVisible = widget.onTap();
+        });
+      },
+    );
   }
 }
