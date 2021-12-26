@@ -40,7 +40,7 @@ class DateField extends ChoiceField<DateTime?> {
             );
             return result ?? lastValue;
           },
-          builder: (date) => Text(date.toString()),
+          itemBuilder: (date) => Text(date.toString()),
           onChanged: onChanged,
           onSaved: onSaved,
         );
@@ -110,7 +110,7 @@ class ColorField extends ChoiceField<ColorVariant> {
                 });
             return result ?? lastValue;
           },
-          builder: (color) => color.widget,
+          itemBuilder: (color) => color.widget,
           onChanged: onChanged,
           onSaved: onSaved,
         );

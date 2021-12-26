@@ -21,7 +21,7 @@ class ChoiceAction<T> {
 class ChoiceField<T> extends FormFieldItem<T?> {
   final String placeholder;
   final ChoiceCallback<T?> onTap;
-  final Widget Function(T value) builder;
+  final Widget Function(T value) itemBuilder;
   final ChoiceAction<T>? action;
   final bool? hasClearIcon;
 
@@ -39,7 +39,7 @@ class ChoiceField<T> extends FormFieldItem<T?> {
     required this.placeholder,
     T? initialValue,
     required this.onTap,
-    required this.builder,
+    required this.itemBuilder,
     ValueChanged<T?>? onChanged,
     ValueChanged<T?>? onSaved,
     bool isActive = true,
@@ -134,7 +134,7 @@ class ChoiceField<T> extends FormFieldItem<T?> {
     if (value != null) {
       return Row(
         children: [
-          Expanded(child: builder(value)),
+          Expanded(child: itemBuilder(value)),
           if (clearIcon != null)
             GestureDetector(
               onTap: () {

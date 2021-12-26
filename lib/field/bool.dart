@@ -54,7 +54,7 @@ class BoolField extends FormFieldItem<bool> {
           isValid: true,
         );
 
-  BoolField.switchbox({
+  BoolField.switchBox({
     Key? key,
     required this.placeholder,
     bool initialValue = false,

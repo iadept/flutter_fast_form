@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 abstract class InputField<T> extends FormFieldItem<T?> {
   final String placeholder;
   final String? helperText;
+  final String? hintText;
 
   final int minLines;
   final int maxLines;
@@ -21,7 +22,7 @@ abstract class InputField<T> extends FormFieldItem<T?> {
   final bool enableSuggestions;
   final bool autocorrect;
   final Iterable<String>? autofillHints;
-  final VoidCallback? onSubmit;
+  VoidCallback? onSubmit;
 
   TextEditingController? _controller;
   bool _obscureText;
@@ -50,6 +51,7 @@ abstract class InputField<T> extends FormFieldItem<T?> {
   InputField({
     Key? key,
     required this.placeholder,
+    this.hintText,
     ValueChanged<T?>? onChanged,
     ValueChanged<T?>? onSaved,
     this.helperText,
@@ -109,6 +111,7 @@ abstract class InputField<T> extends FormFieldItem<T?> {
             ? null
             : const TextStyle(height: 0),
         suffixIcon: _suffix,
+        hintText: hintText,
       ),
       validator: (e) {
         final value = convertFrom(e);
@@ -182,6 +185,7 @@ class StringField extends InputField<String> {
   StringField({
     Key? key,
     required String placeholder,
+    String? hintText,
     ValueChanged<String?>? onChanged,
     ValueChanged<String?>? onSaved,
     String? helperText,
@@ -206,6 +210,7 @@ class StringField extends InputField<String> {
   }) : super(
           key: key,
           placeholder: placeholder,
+          hintText: hintText,
           onChanged: onChanged,
           onSaved: onSaved,
           helperText: helperText,
@@ -230,7 +235,8 @@ class StringField extends InputField<String> {
         );
 
   @override
-  String? convertFrom(String? value) => value;
+  String? convertFrom(String? value) =>
+      value?.isNotEmpty == true ? value : null;
 }
 
 class NumberFieldConstraint<T extends num> {
@@ -259,6 +265,7 @@ class IntField extends InputField<int> {
   IntField({
     Key? key,
     required String placeholder,
+    String? hintText,
     ValueChanged<int?>? onChanged,
     ValueChanged<int?>? onSaved,
     String? helperText,
@@ -281,6 +288,7 @@ class IntField extends InputField<int> {
   }) : super(
           key: key,
           placeholder: placeholder,
+          hintText: hintText,
           onChanged: onChanged,
           onSaved: onSaved,
           helperText: helperText,
@@ -321,6 +329,7 @@ class DoubleField extends InputField<double> {
   DoubleField({
     Key? key,
     required String placeholder,
+    String? hintText,
     ValueChanged<double?>? onChanged,
     ValueChanged<double?>? onSaved,
     String? helperText,
@@ -343,6 +352,7 @@ class DoubleField extends InputField<double> {
   }) : super(
           key: key,
           placeholder: placeholder,
+          hintText: hintText,
           onChanged: onChanged,
           onSaved: onSaved,
           helperText: helperText,

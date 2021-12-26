@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:example/fields.dart';
 import 'package:formaster/field/bool.dart';
 import 'package:formaster/field/input.dart';
+import 'package:formaster/field/dropdown.dart';
 import 'package:formaster/form.dart';
 import 'package:formaster/layout.dart';
 import 'package:flutter/material.dart';
@@ -111,6 +112,7 @@ class ExampleForm {
   late final DoubleField fromField;
   late final DoubleField toField;
   late final ColorField colorField;
+  late final DropdownField<IconData> dropField;
 
   late FormLayout _formLayout;
   final _fields = <FormItem>[];
@@ -155,7 +157,7 @@ class ExampleForm {
           model.dateValue = value;
         });
 
-    boolMainField = BoolField.switchbox(
+    boolMainField = BoolField.switchBox(
         placeholder: 'Test',
         onChanged: (value) {
           // stringField.isActive = value;
@@ -179,6 +181,22 @@ class ExampleForm {
 
     colorField = ColorField(placeholder: 'Choice color');
 
+    dropField = DropdownField<IconData>(
+      placeholder: 'Icons',
+      items: [Icons.ac_unit, Icons.alarm, Icons.yard_outlined],
+      itemBuilder: (e) {
+        // return Icon(e, size: 16);
+        return Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Icon(e, size: 16),
+            const SizedBox(width: 8),
+            Text(e.toString()),
+          ],
+        );
+      },
+    );
+
     _formLayout = FormColumnLayout([
       boolMainField,
       stringField,
@@ -189,6 +207,7 @@ class ExampleForm {
         toField,
       ], separator: const Text('-')),
       colorField,
+      dropField,
       valueItem,
       FormColumnLayout(_fields),
     ]);
@@ -196,7 +215,7 @@ class ExampleForm {
 
   void add() {
     _fields.add(
-      BoolField.switchbox(
+      BoolField.switchBox(
         placeholder: 'Test',
         onChanged: (value) {},
         onSaved: (value) {},
@@ -209,6 +228,7 @@ class ExampleForm {
     stringField.value = '';
     boolField.value = false;
     dateField.value = null;
+    dropField.value = null;
   }
 }
 
